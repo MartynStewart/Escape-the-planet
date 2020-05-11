@@ -1,110 +1,101 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Maze : MonoBehaviour
-{
-    private IntVector2 iSize;
-    private MazeCell mazeCellInstance;
+public class Maze : MonoBehaviour {
+
     private MazeCell[,] cells;
-    private float GenerationStepDelay = 0.5f;
-
-    public MazeCell mazeCellPrefab;
-    public MazePassage mazePassagePrefab;
-    public MazeWall mazeWallPrefab;
+	private IntVector2 size;
+	private float gridSize = 2f;
 
 
-    public IntVector2 RandomCoordinates {
-        get {
-            return new IntVector2(Random.Range(0, iSize.x), Random.Range(0, iSize.z));
-        }
-    }
 
-    public void CreateMaze(IntVector2 size, float waitTime) {
-        iSize = size;
-        GenerationStepDelay = waitTime;
-        StartCoroutine(GenerateMaze());
-    }
-
-    public void StopMaze() {
-        StopCoroutine(GenerateMaze());
-    }
-
-    public MazeCell GetCell(IntVector2 a_coordinates) {
-        return cells[a_coordinates.x, a_coordinates.z];
-    }
-
-    private IEnumerator GenerateMaze() {
-        WaitForSeconds delay = new WaitForSeconds(GenerationStepDelay);
-        cells = new MazeCell[iSize.x, iSize.z];
-        List<MazeCell> activeCells = new List<MazeCell>();
-        DoFirstGenerationStep(activeCells);
-
-        while (activeCells.Count > 0) {
-            yield return delay;
-            DoNextGenerationStep(activeCells);
-        }
-    }
-
-    private MazeCell CreateCell(IntVector2 myPos) {
-        MazeCell newCell = Instantiate(mazeCellPrefab) as MazeCell;
-        cells[myPos.x, myPos.z] = newCell;
-        newCell.iCordinates = myPos;
-        newCell.name = "MazeCell " + myPos.x + "-" + myPos.z;
-        newCell.transform.parent = transform;
-        newCell.transform.position = new Vector3(myPos.x - iSize.x * 0.5f + 0.5f, 0f, myPos.z - iSize.z * 0.5f + 0.5f);
-        return newCell;
-    }
+	public float generationStepDelay = 0.5f;
+    public MazeCell cellPrefab;
+	public MazePassage passagePrefab;
+	public MazeWall wallPrefab;
 
 
-    private void CreatePassage(MazeCell cell, MazeCell neighbourCell, MazeDirection direction) {
-        MazePassage passage = Instantiate(mazePassagePrefab) as MazePassage;
-        passage.Initialise(cell, neighbourCell, direction);
-        passage = Instantiate(mazePassagePrefab) as MazePassage;
-        passage.Initialise(neighbourCell, cell, direction.getOpposite());
-    }
+	public MazeCell GetCell(IntVector2 coordinates) {
+		return cells[coordinates.x, coordinates.z];
+	}
 
-    private void CreateWall(MazeCell cell, MazeCell neighbourCell, MazeDirection direction) {
-        MazeWall wall = Instantiate(mazeWallPrefab) as MazeWall;
-        wall.Initialise(cell, neighbourCell, direction);
-        if(neighbourCell != null) {
-            wall = Instantiate(mazeWallPrefab) as MazeWall;
-            wall.Initialise(neighbourCell, cell, direction.getOpposite());
-        }
-    }
+	public MazeCell[,] Generate(IntVector2 gridSize) {
+		size = gridSize;
+		cells = new MazeCell[size.x, size.z];
+		List<MazeCell> activeCells = new List<MazeCell>();
+		DoFirstGenerationStep(activeCells);
+		while (activeCells.Count > 0) {
+			DoNextGenerationStep(activeCells);
+		}
+		return cells;
+	}
 
-    public bool ContainsCoords(IntVector2 coords) {
-        bool xcheck = (coords.x >= 0 && coords.x < iSize.x);
-        bool zcheck = (coords.z >= 0 && coords.z < iSize.z);
-        return xcheck && zcheck;
-    }
-
-    private void DoFirstGenerationStep(List<MazeCell> ActiveCells) {
-        ActiveCells.Add(CreateCell(RandomCoordinates));
-    }
-
-    private void DoNextGenerationStep(List<MazeCell> ActiveCells) {
-
-        int iCurrentIndex = ActiveCells.Count - 1;
-        MazeCell currentCell = ActiveCells[iCurrentIndex];
-        MazeDirection direction = MazeDirections.RandomValue;
-        IntVector2 iCoordinates = currentCell.iCordinates + direction.ToIntVector2();
-
-        if (ContainsCoords(iCoordinates)) {
-            MazeCell Neighbour = GetCell(iCoordinates);
-            if (!Neighbour) {
-                Neighbour = CreateCell(iCoordinates);
-                CreatePassage(currentCell, Neighbour, direction);
-                ActiveCells.Add(Neighbour);
-            } else {
-                CreateWall(currentCell, Neighbour, direction);
-                ActiveCells.RemoveAt(iCurrentIndex);
-            }
-        } else {
-            CreateWall(currentCell, null, direction);
-            ActiveCells.RemoveAt(iCurrentIndex);
-        }
-    }
+	private MazeCell CreateCell(IntVector2 coordinates) {
+		MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
+		cells[coordinates.x, coordinates.z] = newCell;
+		newCell.coordinates = coordinates;
+		newCell.name = "Maze Cell " + coordinates.x + ", " + coordinates.z;
+		newCell.transform.parent = transform;
+		newCell.transform.localPosition = new Vector3((coordinates.x - size.x) * gridSize, 0f, (coordinates.z - size.z) * gridSize);
+		return newCell;
+	}
 
 
+	public IntVector2 RandomCoordinates {
+		get {
+			return new IntVector2(Random.Range(0, size.x), Random.Range(0, size.z));
+		}
+	}
+
+	public bool ContainsCoordinates(IntVector2 coordinate) {
+		bool xCheck = coordinate.x >= 0 && coordinate.x < size.x;
+		bool zCheck = coordinate.z >= 0 && coordinate.z < size.z;
+		return xCheck && zCheck;
+	}
+
+	private void DoFirstGenerationStep(List<MazeCell> activeCells) {
+		activeCells.Add(CreateCell(RandomCoordinates));
+	}
+
+	private void DoNextGenerationStep(List<MazeCell> activeCells) {
+		int currentIndex = activeCells.Count - 1;
+		MazeCell currentCell = activeCells[currentIndex];
+		if (currentCell.IsFullyInitialized) {
+			activeCells.RemoveAt(currentIndex);
+			return;
+		}
+		MazeDirection direction = currentCell.RandomUninitializedDirection;
+		IntVector2 coordinates = currentCell.coordinates + direction.ToIntVector2();
+		if (ContainsCoordinates(coordinates)) {
+			MazeCell neighbor = GetCell(coordinates);
+			if (neighbor == null) {
+				neighbor = CreateCell(coordinates);
+				CreatePassage(currentCell, neighbor, direction);
+				activeCells.Add(neighbor);
+			} else {
+				CreateWall(currentCell, neighbor, direction);
+				// No longer remove the cell here.
+			}
+		} else {
+			CreateWall(currentCell, null, direction);
+			// No longer remove the cell here.
+		}
+	}
+
+	private void CreatePassage(MazeCell cell, MazeCell otherCell, MazeDirection direction) {
+		MazePassage passage = Instantiate(passagePrefab) as MazePassage;
+		passage.Initialize(cell, otherCell, direction);
+		passage = Instantiate(passagePrefab) as MazePassage;
+		passage.Initialize(otherCell, cell, direction.GetOpposite());
+	}
+
+	private void CreateWall(MazeCell cell, MazeCell otherCell, MazeDirection direction) {
+		MazeWall wall = Instantiate(wallPrefab) as MazeWall;
+		wall.Initialize(cell, otherCell, direction);
+		if (otherCell != null) {
+			wall = Instantiate(wallPrefab) as MazeWall;
+			wall.Initialize(otherCell, cell, direction.GetOpposite());
+		}
+	}
 }

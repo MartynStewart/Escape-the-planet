@@ -4,5 +4,12 @@ using UnityEngine;
 
 public class MazePassage : MazeCellEdge {
 
+    void Start() {
+        
+    }
 
+
+    void Update() {
+        
+    }
 }

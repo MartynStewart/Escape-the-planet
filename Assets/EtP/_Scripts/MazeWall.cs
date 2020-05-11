@@ -2,7 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeWall : MazeCellEdge{
+public class MazeWall : MazeCellEdge {
+
+    private void Start() {
+        
+    }
 
 
+    private void Update() {
+        
+    }
 }

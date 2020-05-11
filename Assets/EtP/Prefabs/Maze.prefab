@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2273817765504049820
+--- !u!1 &6833148341313069063
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1376386327014598838}
-  - component: {fileID: 126439438583423705}
+  - component: {fileID: 672799924362096753}
+  - component: {fileID: 6603396504221686885}
   m_Layer: 0
   m_Name: Maze
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1376386327014598838
+--- !u!4 &672799924362096753
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2273817765504049820}
+  m_GameObject: {fileID: 6833148341313069063}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,21 +31,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &126439438583423705
+--- !u!114 &6603396504221686885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2273817765504049820}
+  m_GameObject: {fileID: 6833148341313069063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0bbb1e8abf486644ab63c4588113bcc, type: 3}
+  m_Script: {fileID: 11500000, guid: cc25c10c2caad62499d77f8d998742c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeCellPrefab: {fileID: 6881361885123192846, guid: dfe9fa7d0c1934749a5becd3a57a3267,
+  generationStepDelay: 0
+  size:
+    x: 20
+    z: 20
+  cellPrefab: {fileID: 1059196960051903993, guid: 7a6ba8a498c145f469c450c37debd7fa,
     type: 3}
-  mazePassagePrefab: {fileID: 6931412324444967956, guid: e699c5aca15b571448a2a6107d8f556f,
+  passagePrefab: {fileID: 4751661935721318842, guid: 477a7b3c0b2f22d41b979112868bce90,
     type: 3}
-  mazeWallPrefab: {fileID: 6413425004803430362, guid: 896e9f3c8a8742d43973133643711b46,
+  wallPrefab: {fileID: 6652044027498976311, guid: 5c6a5204557904a4a8c7bef50f39324d,
     type: 3}
