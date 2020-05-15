@@ -8,6 +8,7 @@ public class MazePortal : MonoBehaviour
     public Zone zonePort;
     private bool isActive = true;
     private ParticleSystem particleSys;
+    AudioManager audioManager = AudioManager.GetInstance();
 
     private void Start() {
         particleSys = GetComponentInChildren<ParticleSystem>();
@@ -21,5 +22,6 @@ public class MazePortal : MonoBehaviour
         isActive = false;
         particleSys.gameObject.SetActive(isActive);
         zonePort.SpawnZone();
+        if (zonePort.zoneMusic) audioManager.PlayClip(zonePort.zoneMusic);
     }
 }

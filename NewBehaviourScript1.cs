@@ -1,18 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TMPro;
 
-public class TimeKeeping : MonoBehaviour {
+public class NewBehaviourScript1 : MonoBehaviour {
 
-    [SerializeField] TextMeshProUGUI GameTime;
-    float gameTime = 0;
-    CollisionCounter cCounter = FindObjectOfType<CollisionCounter>();
+    // Use this for initialization
+    void Start() {
 
+    }
 
     // Update is called once per frame
     void Update() {
-        if (!cCounter.gameOver) {
-            gameTime += Time.deltaTime;
-        }
+
     }
 }

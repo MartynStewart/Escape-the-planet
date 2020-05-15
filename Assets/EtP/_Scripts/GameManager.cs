@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	private GameObject spawnRoom;
 	private Zone currentZone;
 	[SerializeField] private UIManager ui;
+	AudioManager audioManager = AudioManager.GetInstance();
 
 
 	public int newSeed;
@@ -31,19 +32,19 @@ public class GameManager : MonoBehaviour {
 
 
 	public void BeginGame(Zone loadZone) {
-		currentZone = loadZone;
-		ui.UpdateZone(currentZone);
-		spawnRoom.SetActive(false);
-		GenMap.CreateMaze(currentZone, mapSize);
+		currentZone = loadZone;
+		ui.UpdateZone(currentZone);
+		spawnRoom.SetActive(false);
+		GenMap.CreateMaze(currentZone, mapSize);
 	}
 
 	private void ResetGame() {
-		spawnRoom.SetActive(true);
-		currentZone = zones[0];
-		ui.UpdateZone(currentZone);
-		GenMap.ResetGame();
+		spawnRoom.SetActive(true);
+		currentZone = zones[0];
+		ui.UpdateZone(currentZone);
+		GenMap.ResetGame();
+		audioManager.PlaySceneClip();
 	}
-
 
 	private void SetZoneSeeds() {
 		foreach(Zone zone in zones) {

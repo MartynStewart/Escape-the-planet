@@ -16,6 +16,6 @@ MonoBehaviour:
   mazePrefab: {fileID: 6603396504221686885, guid: 16a327889d35c2942937f91c7237d32d,
     type: 3}
   zoneColour: {r: 0.764151, g: 0.16941082, b: 0.16941082, a: 1}
-  zoneMusic: {fileID: 0}
+  zoneMusic: {fileID: 8300000, guid: 4af805765936260459eff64be6674583, type: 3}
   crystalSpawn: {fileID: 1696809802936409233, guid: ef3a7f006f6714948808a106fa5390b2,
     type: 3}
